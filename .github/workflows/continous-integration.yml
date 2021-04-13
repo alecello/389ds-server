@@ -4,6 +4,7 @@ jobs:
   run-molecule:
     name: Test molecule scenarios
     strategy:
+      fail-fast: false
       matrix:
         scenario: [backwards_compatibility, default, other_features, tls]
     runs-on: ubuntu-latest
