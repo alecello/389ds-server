@@ -1,0 +1,22 @@
+name: Run molecule scenarios
+on: [push, pull_request]
+jobs:
+  run-molecule:
+    strategy:
+      matrix:
+        scenario: [backwards_compatibility, default, other_features, tls]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+          uses: actions/checkout@v2
+      - name: Install Python
+          uses: actions/setup-python@v2
+          with:
+            python-version: '3.9'
+      - name: Install Pipenv
+          run: python -m pip install pipenv
+      - name: Install dependencies
+          run: python -m pipenv install
+      - name: Test molecule scenario
+          run: molecule test -s ${{ matrix.scenario }}
+      
