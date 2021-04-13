@@ -19,5 +19,5 @@ jobs:
       - name: Install dependencies
         run: python -m pipenv install
       - name: Test molecule scenario
-        run: molecule test -s ${{ matrix.scenario }}
+        run: python -m pipenv run molecule test -s ${{ matrix.scenario }}
       
