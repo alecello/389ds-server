@@ -2,6 +2,7 @@ name: Run molecule scenarios
 on: [push, pull_request]
 jobs:
   run-molecule:
+    name: Test molecule scenarios
     strategy:
       matrix:
         scenario: [backwards_compatibility, default, other_features, tls]
