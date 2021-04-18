@@ -40,6 +40,9 @@ jobs:
 
       - name: Install dependencies
         run: python -m pipenv install
+      
+      - name: Test
+        run: docker image ls
 
       - name: Test molecule scenario
         run: python -m pipenv run molecule test -s ${{ matrix.scenario }} --destroy never
