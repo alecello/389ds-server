@@ -30,7 +30,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/molecule
-          key: ${{ hashFiles('molecule/**') }}
+          key: ${{ hashFiles('molecule/**') }}-${{ matrix.scenario }}
       
       - name: Create docker images cache folder
         run: mkdir ~/docker-cache
@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/docker-cache
-          key: docker-cache-4
+          key: docker-cache-5
       
       - name: Import docker images backup
         run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker image import $f; done; fi
