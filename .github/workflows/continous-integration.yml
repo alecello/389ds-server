@@ -26,6 +26,12 @@ jobs:
           path: ~/.local/share/virtualenvs
           key: ${{ hashFiles('**/Pipfile.lock') }}
       
+      - name: Cache molecule ephemeral directory
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/molecule
+          key: ${{ hashFiles('molecule/**') }}
+      
       - name: Create docker images cache folder
         run: mkdir ~/docker-cache
       
@@ -33,7 +39,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/docker-cache
-          key: docker-cache-3
+          key: docker-cache-4
       
       - name: Import docker images backup
         run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker image import $f; done; fi
