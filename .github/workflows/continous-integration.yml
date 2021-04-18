@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/docker-cache
-          key: docker-cache-2
+          key: docker-cache-3
       
       - name: Import docker images backup
         run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker image import $f; done; fi
