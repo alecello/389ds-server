@@ -1,4 +1,20 @@
 ---
+scenario:
+  name: backwards_compatibility
+  test_sequence:
+    - lint
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
 dependency:
   name: galaxy
 driver:

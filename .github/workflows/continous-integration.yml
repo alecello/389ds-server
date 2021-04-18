@@ -48,4 +48,4 @@ jobs:
         run: python -m pipenv run molecule test -s ${{ matrix.scenario }} --destroy never
       
       - name: Backup docker images
-        run: for image in $(docker image ls | grep "molecule_local" | awk '{print $3;}' | grep -v "IMAGE"); do docker save $image -o ~/docker-cache/$image.tar; done
+        run: for image in $(docker image ls -a | grep "molecule_local" | awk '{print $3;}' | grep -v "IMAGE"); do docker save $image -o ~/docker-cache/$(docker image ls | grep $image | awk '{print $1 "#" $2}' | sed 's#molecule_local/##').tar; done
