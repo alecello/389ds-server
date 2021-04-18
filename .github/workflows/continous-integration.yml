@@ -36,6 +36,7 @@ jobs:
           key: docker-cache
       
       - name: Import docker images backup
+        run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker image import $f; done; fi
         run: for f in ~/docker-cache/*.tar; do docker image import $f; done
 
       - name: Install dependencies
