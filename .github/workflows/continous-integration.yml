@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/docker-cache
-          key: docker-cache
+          key: docker-cache-2
       
       - name: Import docker images backup
         run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker image import $f; done; fi
@@ -42,7 +42,7 @@ jobs:
         run: python -m pipenv install
 
       - name: Test molecule scenario
-        run: python -m pipenv run molecule test -s ${{ matrix.scenario }}
+        run: python -m pipenv run molecule test -s ${{ matrix.scenario }} --destroy never
       
       - name: Backup docker images
-        run: for image in $(docker image ls | awk '{print $3;}' | grep -v "IMAGE"); do docker save $image -o ~/docker-cache/$image.tar; done
+        run: for image in $(docker image ls | grep "molecule_local" | awk '{print $3;}' | grep -v "IMAGE"); do docker save $image -o ~/docker-cache/$image.tar; done
