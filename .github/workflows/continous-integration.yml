@@ -42,7 +42,7 @@ jobs:
           key: docker-cache-5
       
       - name: Import docker images backup
-        run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker image import $f; done; fi
+        run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker image import $f $(echo $f | sed 's/.tar$//' | awk '{split($0,segments,"#");print "molecule_local/" segments[1] ":" segments[2]}'); done; fi
 
       - name: Install dependencies
         run: python -m pipenv install
