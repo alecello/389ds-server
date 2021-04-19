@@ -29,8 +29,11 @@ jobs:
       - name: Cache molecule ephemeral directory
         uses: actions/cache@v2
         with:
-          path: ~/.cache/molecule
+          path: ~/.cache/molecule/389ds-server/${{ matrix.scenario }}
           key: ${{ hashFiles('molecule/**') }}-${{ matrix.scenario }}
+      
+      - name: Delete state of previous run
+        run: cd ~/.cache/molecule/389ds-server/${{ matrix.scenario }}; rm -rf ansible.cfg inventory molecule.yml state.yml
       
       - name: Create docker images cache folder
         run: mkdir ~/docker-cache
