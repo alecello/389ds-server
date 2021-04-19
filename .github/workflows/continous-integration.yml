@@ -43,7 +43,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/docker-cache
-          key: docker-cache-6
+          key: docker-cache-7
       
       - name: Import docker images backup
         run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker image import $f $(basename $f | sed 's/.tar$//' | awk '{split($0,segments,"#");print "molecule_local/" segments[1] ":" segments[2]}'); done; fi
@@ -62,4 +62,4 @@ jobs:
         run: python -m pipenv run molecule test -s ${{ matrix.scenario }}
       
       - name: Backup docker images
-        run: for image in $(docker image ls -a | grep "molecule_local" | awk '{print $3;}' | grep -v "IMAGE"); do docker save $image -o ~/docker-cache/$(docker image ls | grep $image | awk '{print $1 "#" $2}' | sed 's#molecule_local/##').tar; done
+        run: for i in $(docker container ls -a | grep "molecule_local" | awk '{gsub("molecule_local/|#","");print $1"#"$2}'); do docker export $(echo $i | awk '{split($0,s,"#"); print s[1]}') -o ~/docker-cache/$(echo $i | awk '{split($0,s,"#");print s[2]"#"s[3]}').tar; done
