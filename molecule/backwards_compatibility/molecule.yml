@@ -1,5 +1,6 @@
 ---
-test_sequence:
+scenario:
+  test_sequence:
     - lint
     - dependency
     - cleanup
