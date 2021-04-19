@@ -38,6 +38,9 @@ jobs:
       - name: Create docker images cache folder
         run: mkdir ~/docker-cache
       
+      - name: Test1
+        run: ls ~/docker-cache
+      
       - name: Cache docker images
         id: docker-cache
         uses: actions/cache@v2
@@ -55,7 +58,7 @@ jobs:
       - name: Install dependencies
         run: python -m pipenv install
       
-      - name: Test
+      - name: Test2
         run: docker image ls
 
       - name: Test molecule scenario
