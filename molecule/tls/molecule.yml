@@ -10,6 +10,7 @@ lint: |
 platforms:
   - name: CentOS7-TLS
     image: centos:7
+    pre_build_image: false
     python_package: python
     python_devel_package: python-devel
     install_epel: false

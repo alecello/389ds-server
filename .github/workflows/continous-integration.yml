@@ -26,19 +26,20 @@ jobs:
           path: ~/.local/share/virtualenvs
           key: ${{ hashFiles('**/Pipfile.lock') }}
       
-      - name: Cache molecule ephemeral directory
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/molecule/389ds-server/${{ matrix.scenario }}
-          key: ${{ hashFiles('molecule/**') }}-${{ matrix.scenario }}
-      
-      - name: Delete state of previous run
-        run: if [ -d ~/.cache/molecule/389ds-server/${{ matrix.scenario }} ]; then cd ~/.cache/molecule/389ds-server/${{ matrix.scenario }}; rm -rf ansible.cfg inventory molecule.yml state.yml; fi
+#      - name: Cache molecule ephemeral directory
+#        uses: actions/cache@v2
+#        with:
+#          path: ~/.cache/molecule/389ds-server/${{ matrix.scenario }}
+#          key: ${{ hashFiles('molecule/**') }}-${{ matrix.scenario }}
+#      
+#      - name: Delete state of previous run
+#        run: if [ -d ~/.cache/molecule/389ds-server/${{ matrix.scenario }} ]; then cd ~/.cache/molecule/389ds-server/${{ matrix.scenario }}; rm -rf ansible.cfg inventory molecule.yml state.yml; fi
       
       - name: Create docker images cache folder
         run: mkdir ~/docker-cache
       
       - name: Cache docker images
+        id: docker-cache
         uses: actions/cache@v2
         with:
           path: ~/docker-cache
@@ -46,6 +47,10 @@ jobs:
       
       - name: Import docker images backup
         run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker image import $f $(basename $f | sed 's/.tar$//' | awk '{split($0,segments,"#");print "molecule_local/" segments[1] ":" segments[2]}'); done; fi
+
+      - name: Use pre-built docker images (if they exist)
+        if: steps.docker-cache.outputs.cache-hit == 'true'
+        run: "sed -i 's/pre_build_image: false/pre_build_image: true/g' molecule/${{ matrix.scenario }}/molecule.yml"
 
       - name: Install dependencies
         run: python -m pipenv install

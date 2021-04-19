@@ -1,20 +1,4 @@
 ---
-scenario:
-  name: backwards_compatibility
-  test_sequence:
-    - lint
-    - dependency
-    - cleanup
-    - destroy
-    - syntax
-    - create
-    - prepare
-    - converge
-    - idempotence
-    - side_effect
-    - verify
-    - cleanup
-    - destroy
 dependency:
   name: galaxy
 driver:
@@ -27,6 +11,7 @@ platforms:
   # Images that contain the string "SYSCTL" will be trated with the "docker systemctl replacement" script
   - name: CentOS8-Backwards-SYSCTL
     image: centos:8
+    pre_build_image: false
     python_package: python2
     python_devel_package: python2-devel
     install_epel: true
