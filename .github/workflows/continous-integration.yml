@@ -49,7 +49,7 @@ jobs:
           key: docker-cache-9
       
       - name: Import docker container backups
-        run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker import $f $(basename $f | sed 's/.tar$//' | awk '{split($0,segments,"#");print "molecule_local/" segments[1] ":" segments[2]}'); done; fi
+        run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker import $f $(basename $f | sed 's/.tar$//' | awk '{split($0,segments,"#");print segments[1] ":" segments[2]}'); done; fi
 
       - name: Use pre-built docker images (if they exist)
         if: steps.docker-cache.outputs.cache-hit == 'true'
