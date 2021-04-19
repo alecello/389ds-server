@@ -65,7 +65,7 @@ jobs:
         run: python -m pipenv run molecule test -s ${{ matrix.scenario }}
       
       - name: Backup docker images
-        run: for i in $(docker container ls -a | grep "molecule_local" | awk '{gsub("molecule_local/|#","");print $1"#"$2}'); do docker export $(echo $i | awk '{split($0,s,"#"); print s[1]}') -o ~/docker-cache/$(echo $i | awk '{split($0,s,"#");print s[2]"#"s[3]}').tar; done
+        run: for i in $(docker container ls -a | grep "molecule_local" | awk '{gsub("molecule_local/","");gsub(":","#");print $1"#"$2}'); do docker export $(echo $i | awk '{split($0,s,"#"); print s[1]}') -o ~/docker-cache/$(echo $i | awk '{split($0,s,"#");print s[2]"#"s[3]}').tar; done
       
       - name: Destroy molecule isntances
         run: python -m pipenv run molecule destroy -s ${{ matrix.scenario }}
