@@ -46,7 +46,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/docker-cache
-          key: docker-cache-8
+          key: docker-cache-9
       
       - name: Import docker container backups
         run: if [ $(find ~/docker-cache/ -name "*.tar" | wc -l) -gt 0 ]; then for f in ~/docker-cache/*.tar; do docker import $f $(basename $f | sed 's/.tar$//' | awk '{split($0,segments,"#");print "molecule_local/" segments[1] ":" segments[2]}'); done; fi
